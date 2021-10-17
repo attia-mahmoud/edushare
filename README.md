@@ -1,4 +1,4 @@
-# CS50W Final Project: Capstone
+# Edushare
 
 ## Abstract
 
