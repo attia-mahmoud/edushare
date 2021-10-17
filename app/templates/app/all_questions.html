@@ -1,0 +1,49 @@
+{% extends 'app/layout.html' %}
+
+
+
+{% block body %}
+<div class="all">
+    <div class="home_heading"><h1>All Questions on {{subject}}</h1></div><br>
+<div class="all_entry">
+    {% for post in allposts %}
+    <div class="entry">
+        <img class="profile_pic" src="{{post.user.profile.profile_pic.url}}">
+        <a href="{% url 'user_page' post.user %}"><h6 class="post_user">{{post.user}}</h6></a>
+        <p class="post_date">{{post.date}}</p>
+        <div class="flow">
+            <br>
+            <p class="post_title">{{post.title}}</p>
+            <p class="post_desc">{{post.desc}}</p>
+        </div><br>
+        <div class="answer_btn"><a href="{% url 'post' post.id%}"><button class="blobby-button">Answer<span class="inner">
+            <span class="blobs">
+              <span class="blob"></span>
+           <span class="blob"></span>
+           <span class="blob"></span>
+          
+              <span
+              class="blob"></span>
+                  </span>
+                  </span>
+                  <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                      <defs>
+                          <filter id="goo">
+                              <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"></feGaussianBlur>
+                              <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 21 -7"
+                              result="goo"></feColorMatrix>
+                              <feBlend in2="goo" in="SourceGraphic" result="mix"></feBlend>
+                          </filter>
+                      </defs>
+                  </svg>
+          </button></a>
+        </div>
+        
+    </div>
+    {% endfor %}
+    <br>
+    
+</div>
+</div>
+
+{% endblock %}

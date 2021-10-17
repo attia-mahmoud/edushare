@@ -1,0 +1,223 @@
+{% extends 'app/layout.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+<div class="profile_top">
+<div class="user_header">
+    
+    <img class="profile_pic" src="{{ active_user.profile.profile_pic.url }}"><br>
+    <h2 class="header_name">@{{ active_user.username }}</h2>
+    <div>
+        <span class="follow">Following</span> <span class="numfollow">{{numFollowing}}</span>
+        <span class="follow">Followers</span> <span class="numfollow">{{numFollowers}}</span>
+        <span class="follow">Posts</span> <span class="numfollow">{{numPosts}}</span>
+    </div>
+<!--Follow Buttons-->
+<br>
+{% if user.username != active_user.username and user.is_authenticated %}
+
+    {% if isfollowing %}
+        <form action="{% url 'removefollow' active_user.username %}">
+            <button class="btn btn-primary" type="submit">Unfollow</button>
+        </form>
+        <br>
+    {% else %}
+        <form action="{% url 'addfollow' active_user.username %}">
+            <button class="btn btn-primary" type="submit">Follow</button>
+        </form>
+        <br>
+    {% endif %}
+
+{% endif %}
+<h3>About</h3>
+<p>{{active_user.profile.bio}}</p>
+
+
+</div>
+</div>
+
+
+<div class="profile_page">
+    <div class="profile_options">
+        <ul class="profile_list">
+            <li class="profile_option"><button data-id="my_profile" id="hy" class="profile_btn ">Profile</button></li>
+            <li class="profile_option"><button data-id="my_posts" id="hy"class="profile_btn ">Posts</button></li>
+            <li class="profile_option"><button data-id="my_liked" id="hy"class="profile_btn ">Liked</button></li>
+            <li class="profile_option"><button data-id="my_saved" id="hy"class="profile_btn ">Comments</button></li>
+        </ul>
+    </div>
+
+    <div class="profile_posts profile_update" id="my_profile">
+        <h1>My Profile</h1>
+        <form class="form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{u_form|crispy}}
+            {{p_form|crispy}}
+            <p>*Changing username may lead to some undesired consequences</p>
+            <button class="update_btn" type="submit">Update</button>
+        </form>
+    </div>
+
+    <!--My posts-->
+    
+        <div class="allposts profile_posts" id="my_posts">
+            <div style=" height: 80px; border-radius: 20px 20px 0 0;" class="post">
+                <h1>My Posts</h1>
+            </div>
+            <!--Iterate over all posts-->
+            {% for post in my_posts %}
+            <div data-id="{{post.id}}" class="post">
+                
+                <img class="profile_pic" src="{{post.user.profile.profile_pic.url}}">
+                <h6 class="post_user">{{post.user}}</h6>
+                <p class="post_date">{{post.date}}</p>
+                
+               
+                <div id="{{post.id}}" class="flow">
+                    <br>
+                    
+                        <p class="post_title">{{post.title}}</p>
+                        <p class="post_desc">{{post.desc}}</p>
+                    
+                </div>
+                <!--<a target="blank" href="{{post.doc.url}}"><button class="btn btn-primary">Download File</button></a>-->
+                <div class="post_footer">
+                        <p style="display: inline; font-size: 20px;">{{ post.likes }} &hearts;</p>
+                        <div class="click"><p>Click to expand</p></div>
+                <div class="comment_num">
+                    <p>{{post.comments}}<img src="../static/app/comment.png"></p>
+                </div>
+                        <button data-id = "{{ post.id }}" type="submit" class="edit_button">Edit Post</button>
+                        
+                </div>
+            </div>
+            {% endfor %} 
+            {% if numPosts == 0 %} 
+            <h1 class="message">You have no posts yet</h1>
+            {% endif %}
+        </div>        
+    
+
+    <!--Liked Posts-->
+    <div class="allposts profile_posts" id="my_liked">
+        <div style=" height: 80px; border-radius: 20px 20px 0 0;" class="post">
+            <h1>Liked Posts</h1>
+        </div>
+            <!--Iterate over all posts-->
+            {% for post in liked_posts %}
+            <div data-id="{{post.id}}" class="post">
+                
+                <img class="profile_pic" src="{{post.user.profile.profile_pic.url}}">
+                <h6 class="post_user">{{post.user}}</h6>
+                <p class="post_date">{{post.date}}</p>
+               
+               
+                <div class="flow">
+                    <br>
+                        <p class="post_title">{{post.title}}</p>
+                        <p class="post_desc">{{post.desc}}</p>
+                    
+                </div>
+                <!--<a target="blank" href="{{post.doc.url}}"><button class="btn btn-primary">Download File</button></a>-->
+                <div class="post_footer">
+                    <p style="display: inline; font-size: 20px; color: red;">{{ post.likes }} &hearts;</p>
+                    <div class="click"><p>Click to expand</p></div>
+                    <div class="comment_num">
+                        <p>{{post.comments}}<img src="../static/app/comment.png"></p>
+                    </div>
+                        
+                </div>
+            </div>
+            {% endfor %}  
+            {% if numLikes == 0 %} 
+            <h1 class="message">You have not liked any posts yet</h1>
+            {% endif %}
+    </div>
+
+    <!--Saved Posts-->
+    <div class="profile_posts" id="my_saved">
+        
+        
+            <h1>My Comments</h1>
+        
+        <div class="profile_comments">
+            {% for comment in comments %}
+                <div class="profile_comment">
+                    {% for post in all_posts %}
+                        {% if comment.post == post.id %}
+                        <p>On <i>{{ post.title | truncatechars:50 }}</i></p>
+                        {% endif %}
+                    {% endfor %}
+                    <p><span style="font-weight: 600;">{{ comment.content | truncatechars:50 }}</span> on {{comment.date}}<img data-id="{{comment.id}}" class="delete_icon" src = "../static/app/delete.png"></p>
+                </div>
+            {% endfor %}
+        </div>
+        
+        {% if numComments == 0 %} 
+            <div class="message">
+                <p>You have not commented on anything yet</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg " role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <p id="modal_title" class="post_title">{{post.title}}</p>
+            <br>
+            
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <!--Modal Content-->
+            <div data-id="{{post.id}}" id="modal_div" class="modal_post">
+                <div id="modal_user_info">
+                    <img id="modal_pic" class="profile_pic" src=""><br>
+                    <p id="modal_user"></p>
+                    <p class="post_date" id="modal_date"></p>
+                </div> 
+                <div class="modal_info">
+                    <p id="modal_uni"></p>
+                    
+                    <p id="modal_subject" class="post_subject"></p>
+                    <p id="modal_type"></p>
+                </div>
+                    <br>
+                    <p id="modal_desc" class="post_desc"></p>
+                
+                <br>
+                <iframe id="modal_video" width="420" height="315" allowfullscreen frameborder="0"
+                src="">
+                </iframe>
+                <br>
+                {% if user.is_authenticated %}
+                    <a id="modal_url" target="blank" href="{{post.doc.url}}"><button id="modal_btn" class="btn btn-primary">Download File</button></a>
+                {% else %}
+                    <a id="modal_url" target="blank" href="#"><button disabled id="modal_btn" class="btn btn-primary">Download File</button></a>
+                {% endif %}
+                <hr>
+                    <textarea class="form-control" rows="3" id="comment" placeholder="Add a Comment"></textarea><br>
+                    {% if user.is_authenticated %}
+                    <button id="comment_btn" type="submit" class="btn btn-primary">Comment</button>
+                    {% else %}
+                    <button disabled id="comment_btn" type="submit" class="btn btn-primary">Comment</button>
+                    {% endif %}
+                    <hr>
+               <div id="my_comment"></div>
+                <div id="post_comments">
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+</div>
+</div>
+{% endblock %}

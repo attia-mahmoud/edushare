@@ -1,0 +1,20 @@
+{% extends 'app/layout.html' %}
+
+
+
+{% block body %}
+
+<div class="index-posts">
+    <!--Subjects-->
+    <div class="home_heading"><h1>All Subjects</h1></div>
+    <div class="topic_list subject_list">
+        {% for subject in subjects %}
+            <a class="topic" href="{% url 'subject' subject %}"><button style="background-color: {{ colors|random }};" class=" angled-gradient-button">{{subject}}</button></a>
+        {% endfor %}
+        
+    </div>
+
+
+</div>
+
+{% endblock %}

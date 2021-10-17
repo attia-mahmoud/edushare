@@ -1,0 +1,181 @@
+{% extends 'app/layout.html' %}
+
+{% block body %}
+<div class="user_page">
+<div class="user_header">
+    
+        <img class="profile_pic" src="{{ active_user.profile.profile_pic.url }}"><br>
+        <h2 class="header_name">@{{ active_user.username }}</h2>
+        <div>
+            <span class="follow">Following</span> <span class="numfollow">{{numFollowing}}</span>
+            <span class="follow">Followers</span> <span class="numfollow">{{numFollowers}}</span>
+            <span class="follow">Posts</span> <span class="numfollow">{{numPosts}}</span>
+        </div>
+    <!--Follow Buttons-->
+    <br>
+    {% if user.username != active_user.username and user.is_authenticated %}
+
+        {% if isfollowing %}
+            <form action="{% url 'removefollow' active_user.username %}">
+                <button class="btn btn-primary" type="submit">Unfollow</button>
+            </form>
+            <br>
+        {% else %}
+            <form action="{% url 'addfollow' active_user.username %}">
+                <button class="btn btn-primary" type="submit">Follow</button>
+            </form>
+            <br>
+        {% endif %}
+
+    {% endif %}
+    <h3>About</h3>
+    <p>{{active_user.profile.bio}}</p>
+
+
+</div>
+
+
+
+
+<div class="user_filters">
+    <button data-id="allposts" class="user_btn ">Posts</button>
+    <button data-id="files" class="user_btn ">Files</button>
+    <button data-id="links" class="user_btn">Links</button>
+</div>
+
+<div id="allposts" class="user_divs">
+
+
+    <div class="allposts">
+        {% if numPosts %}
+        <div style=" margin-top: 3rem; height: 80px; border-radius: 20px 20px 0 0;" class="post">
+            <h1 class="user_subheading">@{{active_user.username}}'s Posts</h1>
+        </div>
+        <!--Iterate over all posts-->
+        
+            {% for post in posts %}
+            <div data-id="{{post.id}}" class="post">
+                <img class="profile_pic" src="{{post.user.profile.profile_pic.url}}">
+                <h6 class="post_user">{{post.user}}</h6>
+                
+                <p class="post_date">{{post.date}}</p>
+                
+                <div class="flow">
+                    <br>
+                    <p class="post_title">{{post.title}}</p>
+                    <p class="post_desc">{{post.desc}}</p>
+                </div>
+                
+                
+                <!--<a target="blank" href="{{post.doc.url}}"><button class="btn btn-primary">Download File</button></a>-->
+                <div class="post_footer">
+                    {% if user.is_authenticated %}
+                            <div class="likehover">
+                                {% if post.id in liked_posts %}
+                                <p data-id = '{{ post.id }}' class="numLikes liked" style="display: inline;">{{ post.likes }} &hearts;</p>
+                                {% else %}
+                                <p data-id = '{{ post.id }}' class="numLikes not_liked" style="display: inline;">{{ post.likes }} &hearts;</p>	
+                                {% endif %}  
+                            </div>
+                            
+                    {% else %}
+                            <p style="display: inline; font-size: 20px;">{{ post.likes }} &hearts;</p>
+                    {% endif %}
+                    <div class="click"><p>Click to expand</p></div>
+                    <div class="comment_num">
+                        <p>{{post.comments}}<img src="http://127.0.0.1:8000/static/app/comment.png"></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        
+
+        
+            {% else %}
+            <div class="message">
+                
+                <p>@{{active_user.username}} has no posts</p>
+            </div>
+            
+            {%  endif %}
+    </div>
+
+    
+</div>
+
+
+<div class="user_divs files" id="files">
+    {%if not filemessage%}
+    <h1 class="user_subheading">@{{active_user.username}}'s Files</h1>
+    <br>
+    <table>{{filemessage}}
+        <tr>
+            <th>File Name</th>
+            <th>File Link</th>
+        </tr>
+        {%for post in posts%}
+            {% if post.doc != "null" %}
+                    <tr>
+                        <td>{{post.title}}</td>
+                        <td>
+                            {% if user.is_authenticated %}
+                                <a href = "{{post.doc.url}}" target="blank"><button class="btn btn-primary">Download</button></a>
+                            {% else %}
+                                <button disabled class="btn btn-primary">Download</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+            {% endif %}
+        {%endfor%}
+    </table>
+    {% else %}
+    <div class="user_message">
+        <p>{{filemessage}}</p>
+    </div>
+    {% endif %}
+</div>
+
+
+<div class="user_divs files" id="links">
+    {% if not vidmessage %}
+    <h1 class="user_subheading">@{{active_user.username}}'s Links</h1>
+    <br>
+    <table>
+        <tr>
+            <th>Link Name</th>
+            <th>Link Address</th>
+        </tr>{{vidmessage}}
+        
+    {%for post in posts%}
+        {% if post.video %}
+                <tr>
+                    <td>{{post.title}}</td>
+                    
+                    <td>
+                        {% if user.is_authenticated %}
+                            <a href = "{{post.video}}" target="blank"><button class="btn btn-primary">Watch</button></a>
+                        {% else %}
+                            <button disabled class="btn btn-primary">Watch</button>
+                        {% endif %}
+                    </td>
+                </tr>
+        {% endif %}
+    {%endfor%}
+    </table>
+    {% else %}
+    <div class="user_message">
+        <p>{{vidmessage}}</p>
+    </div>
+    {% endif %}
+</div>
+<br>
+<br>
+<br>
+<br>
+
+
+</div>
+<!-- Modal -->
+
+
+{% endblock %}

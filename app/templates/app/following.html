@@ -1,0 +1,94 @@
+
+{% extends "app/layout.html" %}
+
+{% block body %}
+
+<br>
+
+<div class="allposts">
+    <div style=" height: 80px; border-radius: 20px 20px 0 0;" class="post">
+        <h1>Posts I Follow</h1>
+    </div>
+    <!--Iterate over all posts-->
+    {% for post in posts %}
+    <div data-id="{{post.id}}" class="post">
+        
+        <img class="profile_pic" src="{{post.user.profile.profile_pic.url}}">
+        <a href="{% url 'user_page' post.user %}"><h6 class="post_user">{{post.user}}</h6></a>
+        
+        <p class="post_date">{{post.date}}</p>
+        
+        <div class="flow">
+            <br>
+            <p class="post_title">{{post.title}}</p>
+            <p class="post_desc">{{post.desc}}</p>
+        </div>
+        
+        
+        <!--<a target="blank" href="{{post.doc.url}}"><button class="btn btn-primary">Download File</button></a>-->
+        <div class="post_footer">
+            {% if user.is_authenticated %}
+                    <div class="likehover">
+                        {% if post.id in liked_posts %}
+                        <p data-id = '{{ post.id }}' class="numLikes liked" style="display: inline;">{{ post.likes }} &hearts;</p>
+                        {% else %}
+                        <p data-id = '{{ post.id }}' class="numLikes not_liked" style="display: inline;">{{ post.likes }} &hearts;</p>	
+                        {% endif %}  
+                    </div>
+                    
+            {% else %}
+                    <p style="display: inline; font-size: 20px;">{{ post.likes }} &hearts;</p>
+            {% endif %}
+            <div class="click"><p>Click to expand</p></div>
+            <div class="comment_num">
+                <p>{{post.comments}}<img src="static/app/comment.png"></p>
+            </div>
+        </div>
+        
+        
+    </div>
+    {% endfor %}
+    {% if posts|length == 0 %}
+    <div class="message">
+        <p>You aren't currently following anyone</p>
+    </div>
+    
+    
+    {% endif %}
+</div>
+
+   
+<!--Pagination-->
+<div class="pagination_contain">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+                {% if posts.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a></li>
+                {% endif %}
+        
+                
+                <li class="page-item page-link">Page {{ posts.number }} of {{ posts.paginator.num_pages }}
+                
+        
+                {% if posts.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages }}">&raquo;</a></li>
+                {% endif %}
+            
+
+          
+        </ul>
+      </nav>
+</div>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

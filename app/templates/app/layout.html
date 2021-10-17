@@ -1,0 +1,296 @@
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <!--Responsitivity-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--Bootstrap-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <!--Custom CSS-->
+        <link rel="stylesheet" type="text/css" href="{% static 'app/styles.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'app/dark.css' %}">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+        <script src="{% static 'app/javascript.js' %}">
+
+        </script>
+    </head>
+    
+    <button class="dark-mode-button dark_btn top-dark-mode-button" aria-label="dark mode toggle">
+      <span aria-hidden="true" class="dark-toggle">
+          <span class="DTspan"></span>
+      </span>
+  </button> 
+    <body>
+      <!--Post Btn-->
+      <button type="button" class="post_btn" data-toggle="modal" data-target="#exampleModal">New Post</button>
+      <!--Dark Mode Btn-->
+                   
+      <!--Navigation Bar-->
+      <nav class="nav_hide navbar sticky-top navbar-expand-lg navbar-light bg-light">
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            {% if user.is_authenticated %}
+                <div class="profile">
+                    <li class="nav-item">
+                      <a href="{% url 'profile' user.username %}"><img class="profile_pic" src="{{user.profile.profile_pic.url}}"></a>
+                    </li>
+                </div>
+                {% endif %}
+
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+              <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'index' %}"><img class="nav_icons" src="http://127.0.0.1:8000/static/app/home.png">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'explore' %}"><img class="nav_icons" src="http://127.0.0.1:8000/static/app/compass.png">Explore <span class="sr-only"></span></a>
+                </li>
+                
+                {% if user.is_authenticated %}
+                
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'following' %}"><img class="nav_icons" src="http://127.0.0.1:8000/static/app/follow.png">Following</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}"><img class="nav_icons" src="http://127.0.0.1:8000/static/app/exit.png">Log Out</a>
+            </li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        New Post
+                      </button>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'login' %}"><img class="nav_icons" src="http://127.0.0.1:8000/static/app/login.png">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}"><img class="nav_icons" src="http://127.0.0.1:8000/static/app/register.png">Register</a>
+                </li>
+                {% endif %}
+                
+              </ul>
+            </div>
+          </nav>
+          <div class="sidebar right">
+            <div class="side_container__right">
+                <h4>Top EduSharers</h4><hr>
+                {% for user in whoToFollow %}
+                <div class="s_c__r___child">
+                    <img class="profile_pic" src="{{user.profile.profile_pic.url}}">
+                    <a href="{% url 'user_page' user.username %}"><h6 class="post_user">@{{user.username}}</h6></a>
+                    <form class="post_user" action="{% url 'addfollow' user.username %}">
+                        {% if request.user.is_authenticated %}
+                        <button class="follow_btn">Follow</button>
+                        {% else %}
+                        <button disabled class="follow_btn">Follow</button>
+                        {% endif %}
+                        
+                    </form>
+                </div>
+                {% endfor %}
+                {% if message %}
+                <h5>{{message}}</h5>
+                {% endif %}
+            </div>
+        </div>
+        <div style="bottom: -25rem;" class="sidebar right">
+            <div class="side_container__right">
+                <h4>Latest Questions</h4><hr>
+                {% for post in trending %}
+                <div data-id="{{post.id}}" class=" trend_post s_c__r___child">
+                    <img class="profile_pic" src="{{post.user.profile.profile_pic.url}}">
+                    <a href="{% url 'user_page' post.user.username %}"><h6 class="post_user">@{{post.user.username}}</h6></a>
+                    <div class="post_date">{{post.date}}</div>
+                    <br><br>
+                    {% if post.title|length > 35 %}
+                    <h5>{{ post.title | truncatechars:36 }}..</h5>
+                    {% else %}
+                    <h5>{{post.title}}</h5>
+                    {% endif %}
+                    {% if post.desc|length > 50 %}
+                    <p>{{ post.desc | truncatechars:51 }}..</p>
+                    {% else %}
+                    <p>{{post.desc}}</p>
+                    {% endif %}
+                    
+                </div>
+                {% endfor %}
+                
+            </div>
+        </div>
+          <div class="sidebar left">
+            <div class="side_container__left">
+                    <a class="side_nav nav-link" href="{% url 'index' %}"><img class="nav_icons" src="http://127.0.0.1:8000/static/app/home.png"><span>Home</span></a>
+                    <a class="side_nav nav-link" href="{% url 'explore' %}"><img class="nav_icons" src="http://127.0.0.1:8000/static/app/compass.png"><span>Explore</span></a>
+                {% if user.is_authenticated %}
+                    <a class="side_nav nav-link" href="{% url 'following' %}"><img class="nav_icons" src="http://127.0.0.1:8000/static/app/follow.png"><span>Following</span></a>
+                {% else %}
+                    <a class="side_nav nav-link" href="{% url 'login' %}"><img class="nav_icons" src="http://127.0.0.1:8000/static/app/login.png"><span>Log In</span></a>
+                    <a class="side_nav nav-link" href="{% url 'register' %}"><img class="nav_icons" src="http://127.0.0.1:8000/static/app/register.png"><span>Register</span></a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <a class="side_nav nav-link" href="{% url 'logout' %}"><img class="nav_icons" src="http://127.0.0.1:8000/static/app/exit.png"><span>Log Out</span></a>
+                    <a class="side_nav nav-link" href="{% url 'profile' user.username %}"><img id ="side_pic" class="profile_pic" src="{{user.profile.profile_pic.url}}"><span>{{user.username}}</span></a>
+                {% endif %}
+                
+                
+            </div>
+        </div>
+          <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create a New Post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <!--Modal Content-->
+                        <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <br>
+                        <button type="submit" class="btn btn-primary">Post</button>
+                        </form><br>
+                        <p>* indicates required fields</p>
+                    </div>
+                
+      </div>
+    </div>
+  </div>
+
+        {% block body %}
+        {% endblock %}
+        <!--Back to top-->
+        <div style="width: 100%;text-align: center;">
+          <a class="to-top" href="#top">&uarr; Back to top</a>
+        </div>
+
+
+        <!--Footer-->
+        <footer class="footer">
+          <div class="container">
+            
+            <p>Copyright 2020 | Mahmoud Attia</p>
+
+            
+          </div>
+          <button class="dark-mode-button top-dark-mode-button" aria-label="dark mode toggle">
+            <span aria-hidden="true" class="dark-toggle">
+                <span class="DTspan"></span>
+            </span>
+        </button> 
+          <div class="footer_nav">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                
+              <li class="nav-item active">
+                <a class="nav-link" style="color:#ffffff;" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color:#ffffff;" href="{% url 'explore' %}">Explore <span class="sr-only"></span></a>
+              </li>
+              
+              {% if user.is_authenticated %}
+              
+              <li class="nav-item">
+                <a class="nav-link" style="color:#ffffff;" href="{% url 'following' %}">Following</a>
+            </li>
+              <li class="nav-item">
+                <a style="color:#ffffff;" href="{% url 'profile' user.username %}">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color:#ffffff;" href="{% url 'logout' %}">Log Out</a>
+            </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" style="color:#ffffff;" href="{% url 'login' %}">Login</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" style="color:#ffffff;" href="{% url 'register' %}">Register</a>
+              </li>
+              {% endif %}
+              
+            </ul>
+          </div>
+          
+        </footer>
+
+        
+        <!--Post Modal-->
+        <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg " role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <p id="modal_title" class="post_title">{{post.title}}</p>
+                  
+                  
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <!--Modal Content-->
+                  <div data-id="{{post.id}}" id="modal_div" class="modal_post">
+                      <div id="modal_user_info">
+                          <img id="modal_pic" class="profile_pic" src=""><br>
+                          <p id="modal_user"></p>
+                          <p class="post_date" id="modal_date"></p>
+                      </div> 
+                      <div class="modal_info">
+                          <p id="modal_uni"></p>
+                          
+                          <a id="subject_link" href="#"><p id="modal_subject" class="post_subject"></p></a>
+                          <p id="modal_type"></p>
+                      </div>
+                          <br>
+                          <p id="modal_desc" class="post_desc"></p>
+                      
+                      <br>
+                      <iframe id="modal_video" width="420" height="315" allowfullscreen frameborder="0"
+                      src="">
+                      </iframe>
+                      <br>
+                      {% if user.is_authenticated %}
+                          <a id="modal_url" target="blank" href="{{post.doc.url}}"><button id="modal_btn" class="btn btn-primary">Download File</button></a>
+                      {% else %}
+                          <a id="modal_url" target="blank" href="#"><button disabled id="modal_btn" class="btn btn-primary">Download File</button></a>
+                      {% endif %}
+      
+                      
+      
+                      <hr>
+                          <textarea class="form-control" rows="3" id="comment" placeholder="Add a Comment"></textarea><br>
+                          {% if user.is_authenticated %}
+                          <button id="comment_btn" type="submit" class="btn btn-primary">Comment</button>
+                          {% else %}
+                          <button disabled id="comment_btn" type="submit" class="btn btn-primary">Comment</button>
+                          {% endif %}
+                          <hr>
+                     <div id="my_comment"></div>
+                      <div id="post_comments">
+      
+                      </div>
+                  </div>
+                  
+              </div>
+          </div>
+          
+      </div>
+      </div>
+    
+      </body>
+</html>

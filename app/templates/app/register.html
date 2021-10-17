@@ -1,0 +1,65 @@
+{% extends "app/layout.html" %}
+
+{% block body %}
+
+<div class="register_page">
+    <h2 class="reg_head">Register</h2>
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'register' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!--Username-->
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+        </div>
+        <!--Profile Picture-->
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Profile Pic</span>
+            </div>
+            <div class="custom-file">
+              <input type="file" name="profile_pic" class="custom-file-input" id="inputGroupFile01">
+              <label class="custom-file-label" for="inputGroupFile01">Choose Image</label>
+            </div>
+        </div>
+        <!--Bio-->
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="bio" placeholder="Bio">
+        </div>
+        <!--Email-->
+        <div class="form-group">
+            <input class="form-control" type="email" name="email" placeholder="Email Address">
+        </div>
+        <!--Password-->
+        <div class="form-group">
+            <input class="form-control" type="password" name="password" placeholder="Password">
+        </div>
+        <!--Confirm Password-->
+        <div class="form-group">
+            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+        </div>
+        <!--Choose University-->
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="univer">University</label>
+            </div>
+            <select class="custom-select" name="uni" id="univer">
+                <option selected>Choose...</option>
+                <option value="KFUPM">KFUPM</option>
+                <option value="Harvard">Harvard</option>
+                <option value="MIT">MIT</option>
+                <option value="Yale">Yale</option>
+                <option value="Cambridge">Cambridge</option>
+            </select>
+        </div>
+
+        <!--Submit Button-->
+        <input class="btn btn-primary" type="submit" value="Register">
+    </form>
+
+    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+</div>
+{% endblock %}

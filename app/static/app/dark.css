@@ -1,0 +1,412 @@
+:root {
+    --dark: #000;
+    --medium: #1b1b1b;
+    --light: #2e2e2e;
+}
+
+.dark-mode-button {
+    background: transparent;
+    border: none;
+    height: 40px;
+    width: 30px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    
+}
+
+.top-dark-mode-button {
+    position: fixed;
+    
+    top: 60px;
+    right: 60px;
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    z-index: 1000;
+    -webkit-transition: .3s ease-in;
+    -o-transition: .3s ease-in;
+    transition: .3s ease-in;
+}
+
+.top-dark-mode-button .dark-toggle {
+    background: rgb(230, 230, 230);
+    border-color: rgb(230, 230, 230);
+    width: 35px;
+}
+
+.top-dark-mode-button:after {
+    content: 'DARK';
+    position: absolute;
+    color: rgb(9, 51, 167);
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+    right: 22px;
+    top: 10px;
+    -webkit-transition: .1s ease-in;
+    -o-transition: .1s ease-in;
+    transition: .1s ease-in;
+}
+
+body.dark-mode .top-dark-mode-button:after {
+    content: 'LIGHT';
+    color: var(--primary);
+    top: 12px;
+}
+
+.dark-toggle {
+    margin: 0;
+    width: 30px;
+    height: 16px;
+    z-index: 20;
+    border-radius: 10px;
+    background: transparent;
+    border: 3px solid #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-transition: .3s ease;
+    -o-transition: .3s ease;
+    transition: .3s ease;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    z-index: 1000;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    align-items: center;
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+body.dark-mode .dark-toggle {
+    background: rgb(67,183,255);
+    background: -o-linear-gradient(left, rgba(67,183,255,1) 0%, rgba(0,221,246,1) 100%);
+    background: -webkit-gradient(linear, left top, right top, from(rgba(67,183,255,1)), to(rgba(0,221,246,1)));
+    background: linear-gradient(90deg, rgba(67,183,255,1) 0%, rgba(0,221,246,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#43b7ff",endColorstr="#00ddf6",GradientType=1);
+    border: none;
+}
+
+.dark-toggle span {
+    height: 20px;
+    width: 20px;
+    left: -8px;
+    border-radius: 50%;
+    background: #fff;
+    position: absolute;
+    -webkit-transition: .3s ease;
+    -o-transition: .3s ease;
+    transition: .3s ease;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+}
+
+body.dark-mode .dark-toggle span {
+    left: 15px;
+    -webkit-transition: .3s ease;
+    -o-transition: .3s ease;
+    transition: .3s ease;
+}
+
+.top-dark-mode-button .dark-toggle {
+    background: rgb(230, 230, 230);
+    border-color: rgb(230, 230, 230);
+    width: 35px;
+}
+
+/******************************************************************************/
+/* Begin adding your dark mode styles here, like so: */
+
+/*main body*/
+body.dark-mode{
+    background: rgb(21,32,43);
+    height: 100%;
+}
+
+
+
+
+/*side navigation*/
+body.dark-mode .side_nav{
+    color: white;
+    
+}
+
+
+/*navigation icons*/
+body.dark-mode .nav_icons{
+    filter: invert(99%) sepia(100%) saturate(2%) hue-rotate(360deg) brightness(111%) contrast(100%);
+}
+
+/*nav text on hover*/
+body.dark-mode .side_nav:hover{
+    color: rgb(55, 178, 255);
+    background-color: rgb(38, 68, 97, 0.5);
+}
+
+/*user buttons*/
+body.dark-mode .user_btn, body.dark-mode .profile_btn, body.dark-mode .update_btn, body.dark-mode .edit_button,  body.dark-mode .save_button{
+    color:  white;
+    background-color: rgb(38, 68, 97);
+    border: 1px solid rgb(38, 68, 97);
+    
+    font-weight: 600;
+}
+
+body.dark-mode .user_btn:hover, body.dark-mode .update_btn:hover, body.dark-mode .edit_button:hover,  body.dark-mode .save_button:hover{
+    color: rgb(38, 68, 97);
+    background-color:rgb(48, 164, 236);
+}
+
+
+
+/*nav icons on hover*/
+body.dark-mode .side_nav:hover .nav_icons{
+    filter: invert(51%) sepia(99%) saturate(1980%) hue-rotate(175deg) brightness(97%) contrast(95%);
+
+}
+
+/*right sidebar*/
+body.dark-mode .side_container__right{
+    background: rgb(32, 48, 65);   
+    color: white; 
+}
+
+/*right sidebar headings*/
+body.dark-mode .side_container__right h6{
+    color: white;
+}
+
+/*right sidebar follow button*/
+body.dark-mode .follow_btn {
+    background: rgb(32, 48, 65);
+}
+
+/*post*/
+body.dark-mode .post:not(.likehover) {
+    background: rgb(21,32,43);
+    color: white;
+    border: 0.1rem solid rgb(185, 185, 185);
+    border-bottom: 0.1rem solid rgb(185, 185, 185);
+}
+
+/*comment icon*/
+body.dark-mode .comment_num img{
+    filter: invert(100%) sepia(5%) saturate(7500%) hue-rotate(292deg) brightness(120%) contrast(101%);
+    height: 17px;
+    margin: 3px;
+    margin-top: -2px;
+    margin-left: 10px;
+
+
+}
+
+body.dark-mode .explore_comments{
+    filter: invert(100%) sepia(5%) saturate(7500%) hue-rotate(292deg) brightness(120%) contrast(101%);
+    height: 17px;
+    margin: 3px;
+    margin-top: -2px;
+    margin-left: 10px;
+
+
+}
+
+/*user name*/
+body.dark-mode .post_user {
+    
+    color: white;
+}
+
+
+/*modal background*/
+body.dark-mode .modal-content {
+    color: rgb(38, 60, 82);   
+    background-color: rgb(21,32,43);
+}
+
+/*modal close icon*/
+body.dark-mode .close {
+    color: #fff;
+}
+
+/*modal textarea*/
+body.dark-mode #postmodal textarea {
+    background-color: rgb(190, 222, 255);
+}
+
+/*modal text*/
+body.dark-mode .modal:not(.modal_info) p{
+    color: #fff;
+}
+
+/*modal tags*/
+body.dark-mode #modal_uni {
+    background-color: rgb(45, 182, 255);
+}
+body.dark-mode #modal_type {
+    background-color: rgb(23, 201, 82);
+}
+body.dark-mode #modal_subject {
+    background-color: rgb(255, 128, 202);
+}
+
+/*new post form text*/
+body.dark-mode form {
+    color: rgb(253, 253, 253);
+}
+
+/*h2 and h5 color*/
+body.dark-mode h5, h2 {
+    color: rgb(253, 253, 253);
+}
+
+/*explore page*/
+body.dark-mode .explore_posts {
+    background-color: rgb(32, 48, 65);
+    color: white;
+}
+body.dark-mode .explore_users {
+    background-color: rgb(32, 48, 65);
+    color: white;
+}
+
+body.dark-mode .explore_posts:hover {
+    background-color: rgb(48, 73, 100);
+}
+
+body.dark-mode .explore_header {
+    color: white;
+}
+
+/*user page*/
+body.dark-mode .user_divs {
+    color: white;
+}
+
+body.dark-mode .user_header {
+    color: white;
+    background-color: rgb(32, 48, 65);
+}
+
+/*footer*/
+body.dark-mode .footer {
+    color: white;
+    background-color: rgb(32, 48, 65);
+}
+
+body.dark-mode .not_liked {
+    color: lightblue;
+}
+
+/*profile page*/
+
+body.dark-mode .profile_page {
+    color: white;
+}
+
+body.dark-mode .header_name {
+    color: white;
+}
+
+body.dark-mode .profile_option button:hover{
+    background-color: rgb(32, 48, 65);
+    color:white;
+    transform: scale(1.05);
+    transition: all ease 250ms;
+    border: 2px solid rgb(32, 48, 65);
+}
+
+body.dark-mode .profile_option button{
+    background-color: rgb(21,32,43);
+    padding: 5px 15px;
+    font-size: 1.2rem;
+    color:white;
+    border-radius: 15px;
+    border: 2px solid white;
+}
+
+
+body.dark-mode .delete_icon {
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(188deg) brightness(101%) contrast(104%);
+}
+
+body.dark-mode .delete_icon:hover {
+    filter: invert(29%) sepia(97%) saturate(6466%) hue-rotate(354deg) brightness(95%) contrast(122%);
+    cursor: pointer;
+
+}
+
+body.dark-mode .to-top, body.dark-mode .post_date, body.dark-mode .register_page, body.dark-mode .reg_head, body.dark-mode .home_heading{
+    color: white;
+}
+
+body.dark-mode .to-top {
+    
+    border-color: #fff;
+}
+
+body.dark-mode .animated-arrow{
+    color: white;
+
+}
+
+body.dark-mode .the-arrow, body.dark-mode .the-arrow.-left > .shaft {
+    background-color: #fff;
+}
+
+body.dark-mode .entry > .flow {
+    color: white;
+}
+
+body.dark-mode .blobby-button {
+    color: #ffffff;
+}
+
+body.dark-mode .side_container__left {
+    background: rgba(0, 82, 189, 0.6);
+}
+
+body.dark-mode #my_saved > h1, body.dark-mode .profile_update > h1 {
+    color: white;
+}
+body.dark-mode .profile_comment {
+    border-color: white;
+}
+
+body.dark-mode .entry_footer {
+    background-color:rgb(32, 48, 65);
+}
+
+body.dark-mode #numOfComments, body.dark-mode .comment_heading, body.dark-mode .comment_content, body.dark-mode .comment_date {
+    color: #fff;
+}
+
+body.dark-mode .topic_heading, body.dark-mode .container_heading {
+    color: white;
+}
+
+body.dark-mode .content_container {
+    background-color: rgb(32, 48, 65);
+    color: white;
+}
+

@@ -1,0 +1,106 @@
+{% extends 'app/layout.html' %}
+
+{% block body %}
+
+
+<div class="post_page">
+    <div data-id="{{post.id}}" class="entry">
+        <!--Profile Pic-->
+        <img class="profile_pic" src="{{post.user.profile.profile_pic.url}}">
+        <!--Username-->
+        <a href="{% url 'user_page' post.user %}"><h6 class="post_user">{{post.user}}</h6></a>
+        <!--Date-->
+        <p class="post_date">{{post.date}}</p>
+        <!--Tags-->
+        <div class="modal_info">
+            <p id="modal_uni">{{post.university}}</p>
+            
+            <a href="{% url 'subject' post.subject %}"><p id="modal_subject" class="post_subject">{{post.subject}}</p></a>
+            <p id="modal_type">{{post.post_type}}</p>
+        </div>
+        <!--Main Content-->
+        <div class="flow">
+            <br>
+            <p class="post_title">{{post.title}}</p>
+            <p class="post_desc">{{post.desc}}</p>
+        </div><br>
+        <!--Footer-->
+        <!--Likes + comments-->
+        <div class="entry_footer">
+            {% if user.is_authenticated %}
+                    <div class="likehover">
+                        {% if post.id in liked_posts %}
+                        <p data-id = '{{ post.id }}' class="numLikes liked" style="display: inline;">{{ post.likes }} &hearts;</p>
+                        {% else %}
+                        <p data-id = '{{ post.id }}' class="numLikes not_liked" style="display: inline;">{{ post.likes }} &hearts;</p>	
+                        {% endif %}  
+                    </div>
+                           
+            {% else %}
+                    <p style="display: inline; font-size: 20px;">{{ post.likes }} <span style="font-family: Poppins, Times, serif;">&hearts;</span></p>
+            {% endif %}
+            
+            <div class="comment_num">
+                <p><span id="numOfComments">{{post.comments}}</span><img src="../static/app/comment.png"></p>
+            </div>
+        </div>
+        <!--Profile pic + textarea-->
+        <div class="entry_footer">
+            {% if user.is_authenticated %}
+                    <img style="margin-left: -1rem; margin-right: 1rem;" class="profile_pic" src="{{request.user.profile.profile_pic.url}}">
+            {% endif %}
+                    <textarea style="display: inline;"class="form-control" rows="3" id="comment" placeholder="Post an Answer"></textarea><br>
+         </div><br>
+         <!--Button-->
+         <div data-id="{{post.id}}" class="entry_footer">
+                    {% if user.is_authenticated %}
+                    <button id="comment_btn" type="submit" class="blobby-button">Answer<span class="inner">
+                        <span class="blobs">
+                          <span class="blob"></span>
+                       <span class="blob"></span>
+                       <span class="blob"></span>
+                      
+                          <span
+                          class="blob"></span>
+                              </span>
+                              </span>
+                              <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                  <defs>
+                                      <filter id="goo">
+                                          <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"></feGaussianBlur>
+                                          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 21 -7"
+                                          result="goo"></feColorMatrix>
+                                          <feBlend in2="goo" in="SourceGraphic" result="mix"></feBlend>
+                                      </filter>
+                                  </defs>
+                              </svg>
+                      </button>
+                    {% else %}
+                    <button disabled id="comment_btn" type="submit" class="btn btn-primary">Comment</button>
+                    {% endif %}
+        </div>
+                    
+                    
+               
+        
+    </div>
+    <br><br>
+    <h1 class="comment_heading" >Answers</h1>
+    <div id="my_comment"></div>
+    <div id="post_comments">
+        {% for comment in comments %}
+        <div class="comment">
+            <img class="comment_pic" src="{{comment.pic}}">
+            <a href="{% url 'user_page' comment.username%}"><p class="comment_user">{{comment.username}}</p></a>
+            <p class="comment_date">{{comment.date}}</p>
+            <p class="comment_content">{{comment.content}}</p>
+        </div>
+        {% endfor %}
+        {% if comments|length == 0 %}
+        <div class="message">
+            <p>No answers yet. Be the first one to answer!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,264 @@
+{% extends 'app/layout.html' %}
+
+
+
+{% block body %}
+
+  
+
+<br>
+<div class="">
+    <!--Title-->
+    <div class="foo">
+        <span class="letter" data-letter="E">E</span>
+        <span class="letter" data-letter="D">D</span>
+        <span class="letter" data-letter="U">U</span>
+        <span class="letter" data-letter="S">S</span>
+        <span class="letter" data-letter="H">H</span>
+        <span class="letter" data-letter="A">A</span>
+        <span class="letter" data-letter="R">R</span>
+        <span class="letter" data-letter="E">E</span>
+
+
+      </div>
+      
+    
+
+<!--<div class="allposts index-posts">
+        <div style=" height: 80px; border-radius: 20px 20px 0 0;" class="post">
+            <h1>Home</h1>
+        </div>
+        <!--Iterate over all posts
+        {% for post in posts %}
+        <div data-id="{{post.id}}" class="post">
+            
+            <img class="profile_pic" src="{{post.user.profile.profile_pic.url}}">
+            <a href="{% url 'user_page' post.user %}"><h6 class="post_user">{{post.user}}</h6></a>
+            
+            <p class="post_date">{{post.date}}</p>
+            
+            <div class="flow">
+                <br>
+                <p class="post_title">{{post.title}}</p>
+                <p class="post_desc">{{post.desc}}</p>
+            </div>
+            
+            
+            <!--<a target="blank" href="{{post.doc.url}}"><button class="btn btn-primary">Download File</button></a>
+            <div class="post_footer">
+                {% if user.is_authenticated %}
+                        <div class="likehover">
+                            {% if post.id in liked_posts %}
+                            <p data-id = '{{ post.id }}' class="numLikes liked" style="display: inline;">{{ post.likes }} &hearts;</p>
+                            {% else %}
+                            <p data-id = '{{ post.id }}' class="numLikes not_liked" style="display: inline;">{{ post.likes }} &hearts;</p>	
+                            {% endif %}  
+                        </div>
+                               
+                {% else %}
+                        <p style="display: inline; font-size: 20px;">{{ post.likes }} &hearts;</p>
+                {% endif %}
+                <div class="click"><p>Click to expand</p></div>
+                <div class="comment_num">
+                    <p>{{post.comments}}<img src="static/app/comment.png"></p>
+                </div>
+            </div>
+            
+            
+        </div>
+        
+        {% endfor %}
+    </div> -->
+    
+<div class="index-posts">
+    <!--Subjects-->
+    <div class="home_heading"><h1>Subjects</h1></div>
+    <div class="topic_list subject_list">
+        {% for subject in subjects %}
+            <a class="topic" href="{% url 'subject' subject %}"><button style="background-color: {{ colors|random }};" class=" angled-gradient-button">{{subject}}</button></a>
+        {% endfor %}
+        
+    </div>
+    <div class="view_more"><div class='container'>
+        <ul>
+          <li>
+            <a id="more_subjects" class='animated-arrow' href='{% url "all_subjects" %}'>
+              <span class='the-arrow -left'>
+                <span class='shaft'></span>
+              </span>
+              <span class='main'>
+                <span class='text'>
+                    Explore More Subjects
+                </span>
+                <span class='the-arrow -right'>
+                  <span class='shaft'></span>
+                </span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--Levels-->
+    <div class="home_heading"><h1>Level</h1></div>
+    <div class="topic_list">
+        {% for level in levels %}
+        <a class="topic" href="{% url 'subject' level %}"><button style="background-color: {{ colors|random }};" class=" angled-gradient-button">{{level}}</button></a>
+        {% endfor %}
+    </div>
+    <!--Recent-->
+    <div class="home_heading"><h1>Latest Questions</h1></div><br>
+    <div class="all_entry">
+        {% for post in posts %}
+        <div class="entry">
+            <img class="profile_pic" src="{{post.user.profile.profile_pic.url}}">
+            <a href="{% url 'user_page' post.user %}"><h6 class="post_user">{{post.user}}</h6></a>
+            <p class="post_date">{{post.date}}</p>
+            <div class="flow">
+                <br>
+                <p class="post_title">{{post.title}}</p>
+                <p class="post_desc">{{post.desc}}</p>
+            </div><br>
+            <div class="answer_btn"><a href="{% url 'post' post.id%}"><button class="blobby-button">Answer<span class="inner">
+                <span class="blobs">
+                  <span class="blob"></span>
+               <span class="blob"></span>
+               <span class="blob"></span>
+              
+                  <span
+                  class="blob"></span>
+                      </span>
+                      </span>
+                      <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                          <defs>
+                              <filter id="goo">
+                                  <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"></feGaussianBlur>
+                                  <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 21 -7"
+                                  result="goo"></feColorMatrix>
+                                  <feBlend in2="goo" in="SourceGraphic" result="mix"></feBlend>
+                              </filter>
+                          </defs>
+                      </svg>
+              </button></a>
+            </div>
+            
+        </div>
+        {% endfor %}
+        <br>
+        <div class="view_more"><div class='container'>
+            <ul>
+              <li>
+                <a class='animated-arrow' href='https://google.com'>
+                  <span class='the-arrow -left'>
+                    <span class='shaft'></span>
+                  </span>
+                  <span class='main'>
+                    <span class='text'>
+                        Explore More
+                    </span>
+                    <span class='the-arrow -right'>
+                      <span class='shaft'></span>
+                    </span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div></div>
+    </div>
+
+
+</div>
+
+    
+
+    
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg " role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <p id="modal_title" class="post_title">{{post.title}}</p>
+            <br>
+            
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <!--Modal Content-->
+            <div data-id="{{post.id}}" id="modal_div" class="modal_post">
+                <div id="modal_user_info">
+                    <img id="modal_pic" class="profile_pic" src=""><br>
+                    <p id="modal_user"></p>
+                    <p class="post_date" id="modal_date"></p>
+                </div> 
+                <div class="modal_info">
+                    <p id="modal_uni"></p>
+                    
+                    <p id="modal_subject" class="post_subject"></p>
+                    <p id="modal_type"></p>
+                </div>
+                    <br>
+                    <p id="modal_desc" class="post_desc"></p>
+                
+                <br>
+                <iframe id="modal_video" width="420" height="315" allowfullscreen frameborder="0"
+                src="">
+                </iframe>
+                <br>
+                {% if user.is_authenticated %}
+                    <a id="modal_url" target="blank" href="{{post.doc.url}}"><button id="modal_btn" class="btn btn-primary">Download File</button></a>
+                {% else %}
+                    <a id="modal_url" target="blank" href="#"><button disabled id="modal_btn" class="btn btn-primary">Download File</button></a>
+                {% endif %}
+
+                
+
+                <hr>
+                    <textarea class="form-control" rows="3" id="comment" placeholder="Add a Comment"></textarea><br>
+                    {% if user.is_authenticated %}
+                    <button id="comment_btn" type="submit" class="btn btn-primary">Comment</button>
+                    {% else %}
+                    <button disabled id="comment_btn" type="submit" class="btn btn-primary">Comment</button>
+                    {% endif %}
+                    <hr>
+               <div id="my_comment"></div>
+                <div id="post_comments">
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+</div>
+</div>
+{% endblock %}

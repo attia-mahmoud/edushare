@@ -1,0 +1,181 @@
+{% extends 'app/layout.html' %}
+
+{% block body %}
+<div class="subject_page">
+    <!--Heading-->
+    <div class="topic_heading"><h1>{{subject}}</h1></div>
+
+    <!--Questions-->
+    <div class="content_container">
+        <h2 class="container_heading">Questions</h2><hr>
+        {% for post in questions %}
+        <div class="container_item">
+            <div data-id="{{post.id}}" class=" trend_post s_c__r___child">
+                <img class="profile_pic" src="{{post.user.profile.profile_pic.url}}">
+                <a href="{% url 'user_page' post.user.username %}"><h6 class="post_user">@{{post.user.username}}</h6></a>
+                <div class="post_date">{{post.date}}</div>
+                <br><br>
+                {% if post.title|length > 35 %}
+                <h5>{{ post.title | truncatechars:36 }}..</h5>
+                {% else %}
+                <h5>{{post.title}}</h5>
+                {% endif %}
+                {% if post.desc|length > 50 %}
+                <p>{{ post.desc | truncatechars:51 }}..</p>
+                {% else %}
+                <p>{{post.desc}}</p>
+                {% endif %}
+                <div class="answer_btn"><a href="{% url 'post' post.id%}"><button class="blobby-button">Answer<span class="inner">
+                    <span class="blobs">
+                      <span class="blob"></span>
+                   <span class="blob"></span>
+                   <span class="blob"></span>
+                  
+                      <span
+                      class="blob"></span>
+                          </span>
+                          </span>
+                          <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                              <defs>
+                                  <filter id="goo">
+                                      <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"></feGaussianBlur>
+                                      <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 21 -7"
+                                      result="goo"></feColorMatrix>
+                                      <feBlend in2="goo" in="SourceGraphic" result="mix"></feBlend>
+                                  </filter>
+                              </defs>
+                          </svg>
+                  </button></a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% if questions|length == 0 %}
+            <p>There are no questions at the moment</p>
+        {% else %}
+        <br><br>
+        <div class="view_more"><div class='container'>
+            <ul>
+              <li>
+                <a id="more_subjects" class='animated-arrow' href='{% url "all_questions" subject %}'>
+                  <span class='the-arrow -left'>
+                    <span class='shaft'></span>
+                  </span>
+                  <span class='main'>
+                    <span class='text'>
+                        Explore More
+                    </span>
+                    <span class='the-arrow -right'>
+                      <span class='shaft'></span>
+                    </span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        {% endif %}
+    </div>
+    <!--Videos-->
+    <div class="content_container">
+        <h2 class="container_heading">Videos</h2><hr>
+        {% for post in videos %}
+        <div data-id="{{post.id}}" class="content_post">
+                <img class="profile_pic" src="{{post.user.profile.profile_pic.url}}">
+                <a href="{% url 'user_page' post.user.username %}"><h6 class="post_user">@{{post.user.username}}</h6></a>
+                <div class="post_date">{{post.date}}</div>
+                <br><br>
+                {% if post.title|length > 35 %}
+                    <h5>{{ post.title | truncatechars:36 }}..</h5>
+                {% else %}
+                    <h5>{{post.title}}</h5>
+                {% endif %}<br>
+            <iframe id="modal_video" width="150" height="200" allowfullscreen frameborder="0"
+                    src="{{post.video}}">
+            </iframe>
+        </div>
+        {% endfor %}
+        {% if videos|length == 0 %}
+            <p>There are no videos at the moment</p>
+            {% else %}
+            <br><br>
+            <div class="view_more"><div class='container'>
+                <ul>
+                  <li>
+                    <a id="more_subjects" class='animated-arrow' href='{% url "all_questions" subject %}'>
+                      <span class='the-arrow -left'>
+                        <span class='shaft'></span>
+                      </span>
+                      <span class='main'>
+                        <span class='text'>
+                            Explore More
+                        </span>
+                        <span class='the-arrow -right'>
+                          <span class='shaft'></span>
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        {% endif %}
+    </div>
+    <!--Files-->
+    <div class="content_container">
+        <h2 class="container_heading">Files</h2><hr>
+        {% for post in files %}
+        <div data-id="{{post.id}}" class="content_post">
+                <img class="profile_pic" src="{{post.user.profile.profile_pic.url}}">
+                <a href="{% url 'user_page' post.user.username %}"><h6 class="post_user">@{{post.user.username}}</h6></a>
+                <div class="post_date">{{post.date}}</div>
+                <br><br>
+                {% if post.title|length > 35 %}
+                    <h5>{{ post.title | truncatechars:36 }}..</h5>
+                {% else %}
+                    <h5>{{post.title}}</h5>
+                {% endif %}<br>
+                <a class="topic_link"  target="blank" href="{{post.doc.url}}"><button class="icon-button-3d"> <span class="text">View File</span>
+                    <span class="icon">
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4.706c-2.938-1.83-7.416-2.566-12-2.706v17.714c3.937.12 7.795.681 10.667 1.995.846.388 1.817.388 2.667 0 2.872-1.314 6.729-1.875 10.666-1.995v-17.714c-4.584.14-9.062.876-12 2.706zm-10 13.104v-13.704c5.157.389 7.527 1.463 9 2.334v13.168c-1.525-.546-4.716-1.504-9-1.798zm20 0c-4.283.293-7.475 1.252-9 1.799v-13.171c1.453-.861 3.83-1.942 9-2.332v13.704zm-2-10.214c-2.086.312-4.451 1.023-6 1.672v-1.064c1.668-.622 3.881-1.315 6-1.626v1.018zm0 3.055c-2.119.311-4.332 1.004-6 1.626v1.064c1.549-.649 3.914-1.361 6-1.673v-1.017zm0-2.031c-2.119.311-4.332 1.004-6 1.626v1.064c1.549-.649 3.914-1.361 6-1.673v-1.017zm0 6.093c-2.119.311-4.332 1.004-6 1.626v1.064c1.549-.649 3.914-1.361 6-1.673v-1.017zm0-2.031c-2.119.311-4.332 1.004-6 1.626v1.064c1.549-.649 3.914-1.361 6-1.673v-1.017zm-16-6.104c2.119.311 4.332 1.004 6 1.626v1.064c-1.549-.649-3.914-1.361-6-1.672v-1.018zm0 5.09c2.086.312 4.451 1.023 6 1.673v-1.064c-1.668-.622-3.881-1.315-6-1.626v1.017zm0-2.031c2.086.312 4.451 1.023 6 1.673v-1.064c-1.668-.622-3.881-1.316-6-1.626v1.017zm0 6.093c2.086.312 4.451 1.023 6 1.673v-1.064c-1.668-.622-3.881-1.315-6-1.626v1.017zm0-2.031c2.086.312 4.451 1.023 6 1.673v-1.064c-1.668-.622-3.881-1.315-6-1.626v1.017z"/></svg>
+                     </span>
+                   
+                   </button></a>
+        </div>
+        <br>
+        {% endfor %}
+        {% if files|length == 0 %}
+            <p>There are no files at the moment</p>
+        {% else %}
+        <br><br>
+        <div class="view_more"><div class='container'>
+            <ul>
+              <li>
+                <a id="more_subjects" class='animated-arrow' href='{% url "all_questions" subject %}'>
+                  <span class='the-arrow -left'>
+                    <span class='shaft'></span>
+                  </span>
+                  <span class='main'>
+                    <span class='text'>
+                        Explore More
+                    </span>
+                    <span class='the-arrow -right'>
+                      <span class='shaft'></span>
+                    </span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        {% endif %}
+    </div>
+
+    
+</div>
+
+
+
+
+
+{% endblock %}
